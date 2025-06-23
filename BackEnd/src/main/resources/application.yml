@@ -1,0 +1,120 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /api
+    encoding:
+      charset: UTF-8
+      force: true
+      enabled: true
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
+  error:
+    include-message: always
+    include-binding-errors: always
+    include-stacktrace: on-param
+    include-exception: true
+  # 添加Tomcat WebSocket超时配置
+  tomcat:
+    max-http-form-post-size: 10MB
+    connection-timeout: 120s
+    max-connections: 10000
+    accept-count: 1000
+    max-keep-alive-requests: 10000
+    keep-alive-timeout: 120s
+    # URI编码配置
+    uri-encoding: UTF-8
+  websocket:
+    path: /ws
+
+spring:
+  main:
+    allow-circular-references: true
+    allow-bean-definition-overriding: true
+  datasource:
+    url: jdbc:mysql://localhost:3306/demo?allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=UTC&characterEncoding=UTF-8&createDatabaseIfNotExist=true
+    username: root
+    password: 211418
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  messages:
+    encoding: UTF-8
+  jackson:
+    serialization:
+      fail-on-empty-beans: false
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+  mvc:
+    throw-exception-if-no-handler-found: true
+  web:
+    resources:
+      add-mappings: false
+  # WebSocket配置
+  websocket:
+    max-text-message-size: 8192
+    max-binary-message-size: 8192
+    max-session-idle-timeout: 60000
+    base-path: /ws
+  # Redis配置
+  data:
+    redis:
+      host: localhost
+      port: 6379
+      password:
+      database: 0
+      timeout: 10000
+      lettuce:
+        pool:
+          max-active: 8
+          max-wait: -1
+          max-idle: 8
+          min-idle: 0
+
+# 异常处理配置
+exception:
+  handler:
+    development-mode: true
+    trace-enabled: true
+    include-stacktrace-in-response: true
+    detailed-error-messages: true
+
+# AI服务配置
+ai:
+  service:
+    url: https://api.openai.com/v1/chat/completions
+    api-key: your-api-key-here
+    model: gpt-3.5-turbo
+    timeout: 60000
+
+# LLM配置
+llm:
+  default-api-url: https://api.openai.com/v1/chat/completions
+  default-model: gpt-3.5-turbo
+  connection-timeout: 3000
+  read-timeout: 6000
+  retry:
+    max-attempts: 3
+    backoff-delay: 1000
+
+# 日志配置
+logging:
+  level:
+    root: INFO
+    com.example.demo: DEBUG
+    com.example.demo.service.impl.EvaluationServiceImpl: INFO
+    com.example.demo.service.impl.EvaluationRunScheduler: INFO
+    com.example.demo.exception: DEBUG
+    org.springframework.web: INFO
+    org.springframework.security: DEBUG
+    # 增加WebSocket相关日志级别
+    org.springframework.web.socket: DEBUG
+    org.springframework.messaging: DEBUG
+    org.springframework.web.socket.sockjs: TRACE
+    org.springframework.web.socket.client: DEBUG
+    org.springframework.web.socket.server: TRACE
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+    file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+  file:
+    name: logs/application.log
+    max-size: 10MB
+    max-history: 100

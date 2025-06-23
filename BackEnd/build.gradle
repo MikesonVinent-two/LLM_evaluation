@@ -1,0 +1,94 @@
+plugins {
+    id 'org.springframework.boot' version '3.2.0'
+    id 'io.spring.dependency-management' version '1.1.4'
+    id 'java'
+    id 'io.freefair.lombok' version '8.6'
+}
+
+group = 'com.example'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '21'
+targetCompatibility = '21'
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+    
+    // 添加 Lombok 配置
+    annotationProcessor {
+        exclude group: 'com.sun.tools.javac'
+    }
+    
+    // 解决Lombok兼容性问题
+    all*.exclude group: 'org.projectlombok', module: 'lombok-mapstruct-binding'
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    // Spring Boot Starters
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    
+    // JDBC支持
+    implementation 'org.springframework.boot:spring-boot-starter-jdbc'
+    implementation 'com.zaxxer:HikariCP'
+    
+    // Redis支持
+    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+    implementation 'org.redisson:redisson-spring-boot-starter:3.24.3'
+    
+    // WebSocket支持
+    implementation 'org.springframework.boot:spring-boot-starter-websocket'
+    
+    // Spring Retry
+    implementation 'org.springframework.retry:spring-retry'
+    implementation 'org.springframework:spring-aspects'
+    
+    // Jakarta EE
+    implementation 'jakarta.validation:jakarta.validation-api'
+    
+    // Database
+    runtimeOnly 'com.mysql:mysql-connector-j'
+    
+    // Lombok
+    compileOnly 'org.projectlombok:lombok:1.18.32'
+    annotationProcessor 'org.projectlombok:lombok:1.18.32'
+    
+    // 添加FindBugs依赖
+    implementation 'com.google.code.findbugs:jsr305:3.0.2'
+    
+    // Test
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testCompileOnly 'org.projectlombok:lombok:1.18.32'
+    testAnnotationProcessor 'org.projectlombok:lombok:1.18.32'
+}
+
+test {
+    useJUnitPlatform()
+}
+
+// 添加编码配置
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+    options.annotationProcessorPath = configurations.annotationProcessor
+    options.compilerArgs += ['-Xlint:none', '-Xdiags:verbose']
+}
+
+tasks.withType(Test) {
+    systemProperty "file.encoding", "UTF-8"
+}
+
+tasks.withType(JavaExec) {
+    systemProperty "file.encoding", "UTF-8"
+    jvmArgs += ["-Dfile.encoding=UTF-8"]
+}
+
+bootRun {
+    systemProperty "file.encoding", "UTF-8"
+    jvmArgs += ["-Dfile.encoding=UTF-8"]
+} 

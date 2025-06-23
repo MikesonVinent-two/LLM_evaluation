@@ -1,0 +1,64 @@
+# 依赖目录
+node_modules/
+target/
+build/
+dist/
+
+# IDE文件
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# 操作系统文件
+.DS_Store
+Thumbs.db
+
+# 日志文件
+*.log
+logs/
+
+# 环境变量文件
+.env
+.env.local
+.env.production
+
+# Java编译文件
+*.class
+*.jar
+*.war
+*.ear
+
+# Gradle
+.gradle/
+!gradle/wrapper/gradle-wrapper.jar
+
+# Maven
+.mvn/
+!.mvn/wrapper/maven-wrapper.jar
+
+# Spring Boot
+spring.log
+
+# Node.js
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Vue.js
+*.tgz
+*.tar.gz
+
+# 临时文件
+*.tmp
+*.temp
+
+# 缓存
+.cache/
+.npm/
+.yarn/
+
+# 测试覆盖率
+coverage/
+*.lcov 
